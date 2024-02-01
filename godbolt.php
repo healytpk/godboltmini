@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            background-color: white;
+            background-color: rgb(248, 249, 250); /* Background color behind the image */
             border-bottom: 1px solid #ddd;
             height: 50px; /* Set a static height for the top pane */
         }
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             overflow: auto;
         }
 
-        .upper-right {
+        .upper-right, .lower-right {
             border-bottom: 1px solid #ddd;
             display: flex;
             flex-direction: column;
