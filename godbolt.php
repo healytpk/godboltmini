@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             height: 100%;
             margin: 0;
             overflow: hidden;
-            font-family: 'Courier New', monospace;
             background-color: rgb(248, 249, 250);
         }
 
@@ -46,18 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             padding: 10px;
             background-color: rgb(248, 249, 250); /* Background color behind the image */
             border-bottom: 1px solid #ddd;
-            height: 50px; /* Set a static height for the top pane */
         }
 
         /* Adjusted image style in the top pane */
         .top-pane img {
             width: 14%; /* Resize image to 14% of the width of the entire page */
-            max-height: 150px;
         }
 
         .main-pane {
             display: flex;
-            height: calc(100% - 50px); /* Adjusted height for the main pane */
+            height: 100%;
         }
 
         .left-pane {
@@ -86,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             color: black;
             direction: ltr;
             text-align: left;
+            font-family: monospace;
         }
 
         .right-pane {
@@ -99,22 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
         .lower-right {
             flex: 1;
             overflow: auto;
-        }
-
-        .upper-right, .lower-right {
             border-bottom: 1px solid #ddd;
             display: flex;
             flex-direction: column;
         }
 
-        #upper-right-textbox {
+        #upper-right-textbox, #lower-right-textbox {
             resize: none;
             height: 100%;
-        }
-
-        #lower-right-textbox {
-            resize: none;
-            height: 100%;
+            font-family: monospace;
         }
 
         .compiler-options {
