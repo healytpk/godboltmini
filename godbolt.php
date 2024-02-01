@@ -30,11 +30,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             margin: 0;
             overflow: hidden;
             font-family: 'Courier New', monospace;
+            background-color: rgb(248, 249, 250);
         }
 
         .split-layout {
             display: flex;
+            flex-direction: column;
             height: 100%;
+        }
+
+        .top-pane {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            height: 50px; /* Set a static height for the top pane */
+        }
+
+        /* Adjusted image style in the top pane */
+        .top-pane img {
+            width: 14%; /* Resize image to 14% of the width of the entire page */
+            max-height: 150px;
+        }
+
+        .main-pane {
+            display: flex;
+            height: calc(100% - 50px); /* Adjusted height for the main pane */
         }
 
         .left-pane {
@@ -65,11 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             text-align: left;
         }
 
-        .left-pane img {
-            width: 12vw;
-            max-height: 150px;
-        }
-
         .right-pane {
             display: flex;
             flex-direction: column;
@@ -90,7 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
         }
 
         #upper-right-textbox {
-            /* Remove the resize property and set height to 100% */
+            resize: none;
+            height: 100%;
+        }
+
+        #lower-right-textbox {
             resize: none;
             height: 100%;
         }
@@ -110,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             height: 100%;
             background-color: #ddd;
             cursor: ew-resize;
-            /* Move the resize property to the resize-handle */
             resize: horizontal;
         }
 
@@ -121,42 +142,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
 </head>
 <body>
     <div class="split-layout">
-        <!-- Left pane -->
-        <div class="left-pane">
+        <div class="top-pane">
+            <!-- Adjusted image style in the top pane -->
             <img src="compiler_explorer_mini.png" alt="Compiler Explorer Mini Logo">
-            <div id="output-content" class="editable-content" contenteditable="true" spellcheck="false" style="display: inline-block" oninput="updateContent()"><span class="blue-text">int</span> main(<span class="blue-text">void</span>)<br>{<br>    <span class="blue-text">return</span>;<br>}<br></div>
+            <div>
+                <button onclick="shareButtonClick()">Share</button>
+                <button>Policies</button>
+                <button>Other</button>
+            </div>
         </div>
 
-        <!-- Adjuster handle -->
-        <div class="resize-handle" onmousedown="startResizing(event)"></div>
-
-        <!-- Right pane -->
-        <div class="right-pane">
-            <!-- Upper right pane -->
-            <div class="upper-right">
-                <!-- Buttons -->
-                <div>
-                    <button onclick="shareButtonClick()">Share</button>
-                    <button>Policies</button>
-                    <button>Other</button>
-                </div>
-                <!-- Dropdown box and text box for compiler options -->
-                <div class="compiler-options">
-                    <select id="compiler-select">
-                        <option value="1">x86-64 gcc 13.2</option>
-                        <option value="2">x86-64 gcc 13.2 polymorphism</option>
-                    </select>
-                    <label for="compiler-options-textbox">Compiler Options:</label>
-                    <input type="text" id="compiler-options-textbox">
+        <div class="main-pane">
+            <div class="left-pane">
+                <div id="output-content" class="editable-content" contenteditable="true" spellcheck="false" style="display: inline-block" oninput="updateContent()"><span class="blue-text">int</span> main(<span class="blue-text">void</span>)<br>{<br>    <span class="blue-text">return</span>;<br>}<br></div>
+            </div>
+            <div class="resize-handle" onmousedown="startResizing()"></div>
+            <div class="right-pane">
+                <div class="upper-right">
+                    <div class="compiler-options">
+                        <select id="compiler-select">
+                            <option value="1">x86-64 gcc 13.2</option>
+                            <option value="2">x86-64 gcc 13.2 polymorphism</option>
+                        </select>
+                        <label for="compiler-options-textbox">Compiler Options:</label>
+                        <input type="text" id="compiler-options-textbox">
+                    </div>
+                    <textarea id="upper-right-textbox" style="height: 100%;"></textarea>
                 </div>
 
-                <textarea id="upper-right-textbox" style="height: 100%;"></textarea>
+                <div class="lower-right">
+                    <textarea id="lower-right-textbox" style="height: 100%;"></textarea>
+                </div>
             </div>
 
-            <!-- Lower right pane -->
-            <div class="lower-right">
-                <textarea id="lower-right-textbox"></textarea>
-            </div>
         </div>
         <script>
             var isResizing = false;
