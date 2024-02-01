@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            background-color: rgb(248, 249, 250); /* Background color behind the image */
+            background-color: rgb(248, 249, 250);
             border-bottom: 1px solid #ddd;
         }
 
@@ -116,6 +116,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
 
         select {
             margin-right: 10px;
+        }
+
+        button {
+            background-color: rgb(248, 249, 250);
+            border: none;
+            cursor: pointer;
+            padding: 1px;
+            width: auto;
+            height: 100%; /* -- Stretch vertically to fill the available space */
+        }
+
+        /* Button border on hover */
+        button:hover {
+            border: 1px solid #ddd;
+            background-color: rgb(226, 230, 234); /* Change color on hover */
         }
 
         .resize-handle {
@@ -359,21 +374,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
                 commonUpdateContent( outputContent, GetCaretPosition(outputContent) );
             }
             function shareButtonClick() {
-		var userInput = document.getElementById('output-content').innerText;
+                var userInput = document.getElementById('output-content').innerText;
                 // Send the user input to PHP using fetch
-	        fetch(window.location.href, {
-	            method: 'POST',
-	            body: new URLSearchParams({ userInput: userInput }),
-	            headers: {
-	                'Content-Type': 'application/x-www-form-urlencoded'
-	            },
-	        })
-	        .then(response => response.json())
-	        .then(data => {
-		    const compilerOutput = document.getElementById('upper-right-textbox');
-		    compilerOutput.innerHTML = data.result;
-	        });
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: new URLSearchParams({ userInput: userInput }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const compilerOutput = document.getElementById('upper-right-textbox');
+                    compilerOutput.innerHTML = data.result;
+                });
             }
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get the height of the top-pane
+                const topPane = document.querySelector('.top-pane');
+                const topPaneHeight = topPane.offsetHeight;
+
+                // Set the height of the buttons to match the top-pane
+                const buttons = document.querySelectorAll('.top-pane button');
+                buttons.forEach(button => {
+                    button.style.height = 1.0*topPaneHeight + 'px';
+                    button.style.width  = 1.5*topPaneHeight + 'px';
+                });
+            });
         </script>
     </div>
 </body>
