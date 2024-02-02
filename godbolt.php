@@ -1,6 +1,14 @@
 <?php
 header("Content-Type: text/html; charset=UTF-8");
 
+function available_compilers()
+{
+    return   '<option value="1">x86-64 gcc 13.2 polymorphism</option>'
+           . '<option value="2">x86-64 gcc 13.2</option>'
+           . '<option value="3">x86-64 gcc 7.5</option>'
+    ;
+}
+
 function build($source_code)
 {
     if ( empty($source_code) ) return;
@@ -182,10 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             <div class="right-pane">
                 <div class="upper-right">
                     <div class="compiler-options">
-                        <select id="compiler-select">
-                            <option value="1">x86-64 gcc 13.2</option>
-                            <option value="2">x86-64 gcc 13.2 polymorphism</option>
-                        </select>
+                        <select id="compiler-select"><?php echo available_compilers();?></select>
                         <label for="compiler-options-textbox">Compiler Options:</label>
                         <input type="text" id="compiler-options-textbox">
                     </div>
