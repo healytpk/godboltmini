@@ -49,7 +49,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
 
         /* Adjusted image style in the top pane */
         .top-pane img {
-            width: 14%; /* Resize image to 14% of the width of the entire page */
+            width: 10%; /* Resize image to 10% of the width of the entire page */
+        }
+
+        .border-with-text {
+            background-color: rgb(240, 240, 240);
+            border: 2px solid rgb(103, 197, 42); /* Green text color */
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border-radius: 10px; /* Add rounded corners to the top pane */
         }
 
         .main-pane {
@@ -120,11 +131,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
 
         button {
             background-color: rgb(248, 249, 250);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.0em;
+            color: rgb(124,124,125); /* Dark grey color for text */
             border: none;
             cursor: pointer;
             padding: 1px;
             width: auto;
-            height: 100%; /* -- Stretch vertically to fill the available space */
+            height: 100%;
+            border-radius: 10px; /* Add rounded corners to the top pane */
         }
 
         /* Button border on hover */
@@ -151,10 +166,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
         <div class="top-pane">
             <!-- Adjusted image style in the top pane -->
             <img src="compiler_explorer_mini.png" alt="Compiler Explorer Mini Logo">
+            <div class="border-with-text">Look after yourself, and, if you can, foster a child too.</div>
             <div>
-                <button onclick="shareButtonClick()">Share</button>
-                <button>Policies</button>
-                <button>Other</button>
+                <button onclick="shareButtonClick()">Share &blacktriangledown;</button>
+                <button>Policies &blacktriangledown;</button>
+                <button>Other &blacktriangledown;</button>
             </div>
         </div>
 
