@@ -9,17 +9,22 @@ function available_compilers()
     ;
 }
 
-function build($source_code)
+function build($compiler_options,$source_code)
 {
     if ( empty($source_code) ) return;
     file_put_contents('/tmp/godboltmini_source.cpp', $source_code . "\n");
-    return shell_exec('../godbolt/compilers/gnu13_20240131/bin/g++ -o /tmp/godboltmini_executable /tmp/godboltmini_source.cpp 2>&1');
+    $cmd  = '../godbolt/compilers/gnu13_20240131/bin/g++ -o /tmp/godboltmini_executable /tmp/godboltmini_source.cpp ';
+    $cmd .= $compiler_options;  // must make safe so that hackers can't wipe my webspace!
+    $cmd .= ' 2>&1';
+    return shell_exec($cmd);
 }
 
 // Check if form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
-    $userInput = $_POST['userInput'];
-    $result = build($userInput);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sourceCode']))
+{
+    $sourceCode = $_POST['sourceCode'];
+    $compilerOptions = $_POST['compilerOptions'];
+    $result = build($compilerOptions, $sourceCode);
 
     // Return the result as JSON
     echo json_encode(['result' => $result]);
@@ -156,6 +161,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
             background-color: rgb(226, 230, 234); /* Change color on hover */
         }
 
+        #compiler-options-textbox {
+            display: flex;
+            flex-flow: column nowrap;
+            flex-grow: 1;
+        }
+
         .resize-handle {
             width: 10px;
             height: 100%;
@@ -191,8 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
                 <div class="upper-right">
                     <div class="compiler-options">
                         <select id="compiler-select"><?php echo available_compilers();?></select>
-                        <label for="compiler-options-textbox">Compiler Options:</label>
-                        <input type="text" id="compiler-options-textbox">
+                        <input type="text" id="compiler-options-textbox" value="-std=c++23 -pedantic -Wall -Wextra">
                     </div>
                     <textarea id="upper-right-textbox" style="height: 100%;"></textarea>
                 </div>
@@ -395,11 +405,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userInput'])) {
                 commonUpdateContent( outputContent, GetCaretPosition(outputContent) );
             }
             function shareButtonClick() {
-                var userInput = document.getElementById('output-content').innerText;
+                var compilerOptions = document.getElementById('compiler-options-textbox').value;
+                var sourceCode = document.getElementById('output-content').innerText;
                 // Send the user input to PHP using fetch
                 fetch(window.location.href, {
                     method: 'POST',
-                    body: new URLSearchParams({ userInput: userInput }),
+                    body: new URLSearchParams({ compilerOptions: compilerOptions, sourceCode: sourceCode }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
