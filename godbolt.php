@@ -326,7 +326,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sourceCode']))
                     if ( event.key === 'Tab' || event.keyCode === 9 )
                     {
                         event.preventDefault();
-                        document.execCommand('insertText', false, '    ');
+                        if ( event.shiftKey )
+                        {
+                            const oc = document.getElementById('output-content');
+                            const pos = GetCaretPosition(oc);
+                            if ( pos < 4 ) return;
+                            var text = oc.innerText || oc.textContent;
+                            if ( ! text ) return;
+                            var i = 0;
+                            for ( ; i < 4; ++i )
+                            {
+                                if ( ' ' != text.charAt(pos-1-i) ) break;
+                                text = text.slice(0,pos-1-i) + text.slice(pos-i);
+                            }
+                            oc.innerText = text;
+                            commonUpdateContent(oc, pos - i);
+                        }
+                        else
+                        {
+                            document.execCommand('insertText', false, '    ');
+                        }
                     }
                     else if ( event.key === '<' )
                     {
